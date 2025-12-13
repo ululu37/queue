@@ -1,0 +1,52 @@
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql2
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234        # รหัสผ่าน root
+      MYSQL_DATABASE: roomq               # ชื่อ database เริ่มต้น
+      MYSQL_USER: sql                      # ผู้ใช้ใหม่
+      MYSQL_PASSWORD: 1234               # รหัสผ่านของผู้ใช้ใหม่
+    ports:
+      - "3333:3306"                             # พอร์ต MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql             # เก็บข้อมูลไว้ถาวรในโฟลเดอร์ host
+      - ./backend/init_db:/docker-entrypoint-initdb.d   # ⭐ auto run SQL ที่นี่
+    command: []   # ไม่ต้องใส่อะไร ปล่อย default
+
+
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin2
+    ports:
+      - "8080:80"                      # เปิดหน้าเว็บ phpMyAdmin ผ่าน http://localhost:8080
+    environment:
+      PMA_HOST: mysql                  # ชื่อ service ของ MySQL (ต้องตรงกับด้านบน)
+      PMA_USER: root
+      PMA_PASSWORD: 1234
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      - mysql   
+  myservice:
+    image: registry-ui.vecskill.ovec/my-image:latest
+    ports:
+      - "81:80"
+    environment:
+      JWT_SECRET: secret
+      JWT_REFRESH_SECRET: refresh_secret
+      ROOT_USERNAME: admin
+      ROOT_PASSWORD: 1234
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DB: roomq
+      MYSQL_USERNAME: sql
+      MYSQL_PASSWORD: 1234
+    profiles:
+      - production
+      - backend
+
+
+volumes:
+  mysql_data:

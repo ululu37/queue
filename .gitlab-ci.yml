@@ -1,0 +1,68 @@
+stages:
+  - test
+  - build
+  - deploy
+
+# -----------------------------
+# TEST STAGE
+# -----------------------------
+test_job:
+  stage: test
+  image: node:22
+  script:
+    - npm install
+    - npm test
+  tags:
+    - local
+  only:
+    - main
+
+# -----------------------------
+# BUILD STAGE
+# -----------------------------
+build:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind   # ต้องการ docker-in-docker
+  variables:
+    DOCKER_TLS_CERTDIR: "" # ปิด TLS
+  tags:
+    - local
+  script:
+    - docker info
+    - docker build -t my-image .
+    - docker tag my-image registry-ui.vecskill.ovec/my-image:latest
+    - docker push registry-ui.vecskill.ovec/my-image:latest
+  only:
+    - main
+
+# -----------------------------
+# DEPLOY STAGE (SSH to Production)
+# -----------------------------
+deploy_to_production:
+  stage: deploy
+  image: alpine:latest
+  tags:
+    - local
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan 192.168.100.102 >> ~/.ssh/known_hosts
+  script:
+
+    # 1) ส่ง docker-compose.yml ไปให้เครื่อง production
+    - scp -r ./docker-compose.yaml root@192.168.100.102:/opt/docker-compose.yaml
+    - scp -r ./init_db root@192.168.100.102:/opt/
+    # 2) SSH เพื่อ pull + deploy เวอร์ชันใหม่ f
+    - ssh root@192.168.100.102 "
+        cd /opt &&
+        docker compose pull &&
+        docker compose --profile production up -d --remove-orphans
+      "
+  only:
+    - main
+
+
