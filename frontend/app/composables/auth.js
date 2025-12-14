@@ -57,7 +57,6 @@ export function useAuth() {
         method: "POST",
         credentials: "include",
       });
-
       user.value = null;
       router.push("/login");
     } catch (err) {

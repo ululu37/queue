@@ -37,12 +37,11 @@ router.post("/upload",
 
 router.get("/listing",
     [
-        query("page").isNumeric().notEmpty(),
-        query("perpage").isNumeric().notEmpty(),
+        query("queue_id").isNumeric().notEmpty(),
     ],async (req, res) => {
         try {
-            const { page, perpage } = req.query;        
-            const result = await fileUsecase.listing(page, perpage);
+            const { queue_id } = req.query;        
+            const result = await fileUsecase.listing(queue_id);
             return  res.status(200).json(result);
         } catch (err) {
             console.error(err);

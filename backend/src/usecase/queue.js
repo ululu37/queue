@@ -3,7 +3,16 @@ import queueRepo from "../repo/queue.js";
 
 const booking = async (title,detail, auth_id, room_id, date) => {
  // console.log(title,detail, auth_id, room_id, date);
-  
+  const queue_on_date = await queueRepo.get_by_date(date, room_id, [0, 1]);
+  let is_bokked = false;
+  for (const queue of queue_on_date) {
+    if (queue.auth_id == auth_id) {
+      is_bokked = true;
+    }
+  }
+  if (is_bokked) {
+    throw new Error(errExep.BOOKED_ON_DATE);
+  }
   const id = await queueRepo.create(title,detail, auth_id, room_id, 0, date);
   return { id: id, title,detail, room: room_id, date };
 };

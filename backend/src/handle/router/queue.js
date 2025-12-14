@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router();
-import queueUsecase from "../../repo/queue.js";
+import queueUsecase from "../../usecase/queue.js";
 import { body,query } from "express-validator";
 import errValidator from "../middlewere/err.validator.js";
 import permit from "../middlewere/permit.js";

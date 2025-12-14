@@ -6,7 +6,7 @@ import errValidator from "../middlewere/err.validator.js";
 import permit from "../middlewere/permit.js";
 
 router.post(
-  "/create",
+  "/",
   [body("name").isString().notEmpty()],
   errValidator,
   permit([0]),
@@ -46,7 +46,7 @@ router.get(
     query("per_page").isNumeric().notEmpty(),
   ],
   errValidator,
-  permit([0]),
+  permit([0,1,2]),
   async (req, res) => {
     try {
       const { page, per_page } = req.query;

@@ -65,7 +65,7 @@ router.get('/me',
             const result = await authUsecase.me(token);
             res.status(200).json(result);
         } catch (error) {
-            res.status(400).json({ msg: error.message });
+            res.status(401).json({ msg: error.message });
         }
     }
 );

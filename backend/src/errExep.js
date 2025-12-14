@@ -13,5 +13,6 @@ export default  {
     NO_PERMISSION_DELETE_FILE:'คุณไม่มีสิทธิ์ในการลบไฟล์ในคิวนี้',
     FILE_NOT_FOUND:'ไม่พบไฟล์',
     FILE_DELETE_FAIL:'ลบไฟล์ไม่สำเร็จ',
-    NO_PERMISSION_UPDATE_QUEUE:'คุณไม่มีสิทธิ์ในการเเก้ไขเนื้อหา'
+    NO_PERMISSION_UPDATE_QUEUE:'คุณไม่มีสิทธิ์ในการเเก้ไขเนื้อหา',
+    BOOKED_ON_DATE:'คุณได้จองคิวในวันนั้นเเล้ว'
 }

@@ -45,3 +45,6 @@ MYSQL_PASSWORD=1234
 
 docker-compose --profile backend up --build -d
 
+npm create nuxt@latest <name>
+# install tailwind เเบบเพิ่ม config ไห้เลย
+npx nuxi module add tailwindcss
