@@ -1,9 +1,7 @@
 # Queue — Room Queue Management System
 
-## Overview
-ระบบจัดการคิวสำหรับการใช้งานห้อง  
-รองรับการสร้างคิว เรียกคิว จัดการสถานะ และแนบไฟล์  
-ออกแบบโดยเน้น **Scalability, Maintainability และ Clean Architecture**
+ออกแบบเพื่อเป็น **ตัวอย่างโปรเจกต์สำหรับการเรียนรู้การพัฒนา Web Application**
+ด้วยโครงสร้างแบบ **Clean Architecture** และสภาพแวดล้อมแบบ Production
 
 ---
 
@@ -29,7 +27,7 @@
 
 ## How to Run
 
-### Run on Docker
+### Run on (Docker)
 ```bash
 # phpmyadim + mysql
 docker compose up -d
